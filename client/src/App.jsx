@@ -3,7 +3,30 @@ import axios from "axios";
 import { QRCodeSVG } from "qrcode.react";
 import WorldMap from "./components/WorldMap";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+function getApiUrl() {
+  const fallback = "http://localhost:5000/api";
+  const rawValue = import.meta.env.VITE_API_URL;
+
+  if (!rawValue) {
+    return fallback;
+  }
+
+  let value = String(rawValue).trim().replace(/^['"]|['"]$/g, "");
+
+  if (!/^https?:\/\//i.test(value)) {
+    if (/^localhost(?::\d+)?(\/.*)?$/i.test(value)) {
+      value = `http://${value}`;
+    } else if (/^[a-z0-9.-]+\.[a-z]{2,}(\/.*)?$/i.test(value)) {
+      value = `https://${value}`;
+    } else {
+      return fallback;
+    }
+  }
+
+  return value.replace(/\/+$/, "");
+}
+
+const API_URL = getApiUrl();
 const ADMIN_STORAGE_KEY = "we-all-with-you-admin-auth";
 const STRIPE_MONTHLY_LINK =
   import.meta.env.VITE_STRIPE_MONTHLY_LINK || "https://checkout.stripe.com/pay/we-all-with-you-monthly";
@@ -569,7 +592,7 @@ export default function App() {
       } else {
         const authData = response.data;
         setAdminAuth(authData);
-        localStorage.setItem(ADMIN_STORAGE_KEY, JSON.stringify(authData));
+        localStorage.setItem(ADMIN_STORAGE_KEY, JSO.stringify(authData));
         const loginMsg = "Admin login successful.";
         setAdminAuthMessage(loginMsg);
         notify(loginMsg);

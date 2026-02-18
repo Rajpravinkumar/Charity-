@@ -78,3 +78,35 @@ Backend runs on `http://localhost:5000`
 - `PATCH /api/finance/withdraw-requests/:id/reject` Reject withdrawal request (admin auth required)
 
 Use `Authorization: Bearer <token>` for admin-protected endpoints.
+
+## Deploy On Vercel
+
+Deploy as **2 separate Vercel projects** from the same repo.
+
+### 1) Backend Project (`server`)
+- Import repository in Vercel
+- **Root Directory**: `server`
+- **Framework Preset**: `Other`
+- **Build Command**: leave default
+- **Output Directory**: leave empty
+- Add Environment Variables:
+  - `MONGO_URI=your_mongodb_connection_string`
+  - `JWT_SECRET=your_secure_jwt_secret`
+- Deploy
+
+Backend API base URL after deploy:
+- `https://<your-backend-project>.vercel.app/api`
+
+### 2) Frontend Project (`client`)
+- Import repository in Vercel
+- **Root Directory**: `client`
+- **Framework Preset**: `Vite`
+- Add Environment Variables:
+  - `VITE_API_URL=https://<your-backend-project>.vercel.app/api`
+  - `VITE_STRIPE_MONTHLY_LINK=https://checkout.stripe.com/pay/your-monthly-link` (optional)
+  - `VITE_STRIPE_ONCE_LINK=https://checkout.stripe.com/pay/your-once-link` (optional)
+- Deploy
+
+### Notes
+- If frontend cannot call backend, check backend URL in `VITE_API_URL` and redeploy frontend.
+- Keep MongoDB network access open for Vercel (or allow required IP access in Atlas settings).

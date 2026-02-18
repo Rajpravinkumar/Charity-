@@ -988,6 +988,25 @@ select {
   display: inline-block;
 }
 
+@media (max-width: 900px) {
+  .support,
+  .donate-section,
+  .dashboard,
+  .about-section,
+  .sponsor-section {
+    padding: 1.5rem 4vw;
+  }
+
+  .slide-track {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .admin-section {
+    margin: 1rem 3vw 1.5rem;
+    padding: 1.2rem 4vw 1.6rem;
+  }
+}
+
 @media (max-width: 640px) {
   .hero {
     min-height: 78vh;
@@ -1008,12 +1027,16 @@ select {
     display: flex;
     flex-wrap: wrap;
     gap: 0.7rem;
+    width: 100%;
   }
 
   .nav a {
     margin-left: 0;
     margin-right: 0;
     font-size: 0.95rem;
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
   }
 
   .hero-content {
@@ -1057,6 +1080,11 @@ select {
     height: 220px;
   }
 
+  .slide-nav {
+    width: 44px;
+    height: 44px;
+  }
+
   .admin-dashboard-grid {
     grid-template-columns: 1fr;
   }
@@ -1072,5 +1100,24 @@ select {
   .admin-section {
     margin: 1rem;
     border-radius: 12px;
+  }
+
+  .qr-card {
+    max-width: 100%;
+  }
+
+  .donate-form,
+  .admin-card,
+  .map-card,
+  .support-dashboard,
+  .slide-card,
+  .sponsor-card {
+    border-radius: 12px;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 16px;
   }
 }
